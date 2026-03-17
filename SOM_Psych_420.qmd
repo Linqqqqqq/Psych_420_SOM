@@ -1,0 +1,77 @@
+---
+title: "Self-Organizing Map Project"
+author: 
+  - Lin Qiu
+  - Mahrukh Khan
+  - Jake Douglas Wood
+  - Nicole Barkan
+course: "PSYCH 420"
+date: "April 22, 2026"
+format: html
+---
+
+## Introduction
+
+Write your introduction here.
+
+Example of display-style equations:
+
+$$
+\Delta w = \eta \cdot h_{ci} \cdot (x - w)
+$$
+
+Where:  
+- $\Delta w$ is the weight update  
+- $\eta$ is the learning rate  
+- $h_{ci}$ is the neighborhood function  
+
+---
+
+## Algorithm
+
+Explain the SOM steps here. Can include equations, e.g.,:
+
+$$
+w_i(t+1) = w_i(t) + \eta(t) \cdot h_{ci}(t) \cdot [x(t) - w_i(t)]
+$$
+
+---
+
+## Implementation
+
+Python code chunk example:
+
+```python
+# Simple Python example
+import numpy as np
+
+# Generate sample 2D data
+data = np.random.rand(5,2)
+print("Data shape:", data.shape)
+```
+
+Will eventually add **full SOM code here later**.  
+
+---
+
+## Results
+
+Add plots or other outputs here. Python plotting example:
+
+```python
+import matplotlib.pyplot as plt
+
+plt.scatter(data[:,0], data[:,1])
+plt.title("Sample Data Points")
+plt.show()
+```
+
+---
+
+## Discussion
+
+Write discussion here.
+
+## References
+
+Paste references here.
