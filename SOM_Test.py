@@ -28,7 +28,6 @@ def update_weights(weights, x, c, eta, h):
     return weights
    
 # Parameters
-weights = np.random.rand(3,3)
 inputs = [0.1, 0.4, 0.9, 0.7]
 eta_initial = 0.5
 sigma_initial = 1.0
