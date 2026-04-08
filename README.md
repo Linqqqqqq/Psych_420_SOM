@@ -1,5 +1,5 @@
 The repository contains Python implementations of Kohonen's Self-Organizing Map (SOM) developed for a psychology course project. 
-The goal is to translate the mathematical formulation of SOMs into working code and demonstrate their behaviour in a simplified setting. 
+The goal is to translate the mathematical formulation of SOMs into working code and demonstrate their behaviour in a simplified manner. 
 
 ## Files
 - som_1D_model.py -> core 1D SOM implementation
