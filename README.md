@@ -10,5 +10,5 @@ The goal is to translate the mathematical formulation of SOMs into working code 
 
 To run the code: install numpy and matplotlib packages, then run any script directly.
 
-## Author
+## Author(s)
 Lin Q. (l4qiu@uwaterloo.ca) – Psychology 420 project
