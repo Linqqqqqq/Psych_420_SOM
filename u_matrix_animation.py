@@ -138,12 +138,14 @@ def update(frame):
 
     ax2.set_xlim(0, 1)
     ax2.set_ylim(0, 1)
-    ax2.set_xlabel("x₁")
-    ax2.set_ylabel("x₂")
-    ax2.legend(loc="upper left")
+    ax2.legend(loc="lower right")
     ax2.text(0.02, 0.95, f"Iteration {frame}", transform=ax2.transAxes)
 
     return [im]
+
+# Dummy image for the colourbar 
+cbar_mappable = ax1.imshow(u_matrices[0], cmap='viridis', vmin=0, vmax=u_max)
+fig.colorbar(cbar_mappable, ax=ax1, fraction=0.046, pad=0.04)
 
 anim = FuncAnimation(fig, update, frames=len(u_matrices), interval=120, blit=False)
 
