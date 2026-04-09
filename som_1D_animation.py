@@ -11,9 +11,9 @@ inputs = np.array([0.1, 0.4, 0.9, 0.7])
 
 # Training parameters
 eta_initial = 0.5
-sigma_initial = 3.0       # larger neighborhood so weights move visibly
+sigma_initial = 3.0
 n_iterations = 200
-tau = 200                 # slower decay
+tau = 200
 
 # Initialize weights
 np.random.seed(10)
@@ -22,7 +22,7 @@ weights = np.random.rand(n_nodes)
 # Store all frames
 weight_history = []
 
-# --- TRAINING LOOP (record frames) ---
+# TRAINING LOOP (record frames)
 for t in range(n_iterations):
     for x in inputs:
         c = find_bmu(weights, x)
@@ -33,7 +33,7 @@ for t in range(n_iterations):
 
     weight_history.append(weights.copy())
 
-# --- ANIMATION SETUP ---
+# ANIMATION SETUP
 fig, ax = plt.subplots(figsize=(8, 4))
 
 def update(frame):
@@ -41,10 +41,12 @@ def update(frame):
     ax.plot(weight_history[frame], marker='o')
     ax.set_ylim(0, 1)
     ax.set_title(f"Weights at iteration {frame}")
+    ax.set_xlabel("Node index")
+    ax.set_ylabel("Weight value")
 
 ani = FuncAnimation(fig, update, frames=len(weight_history), interval=50)
 
-# --- SAVE GIF ---
+# SAVE GIF
 ani.save("som_weights.gif", writer=PillowWriter(fps=20))
 
 plt.show()
