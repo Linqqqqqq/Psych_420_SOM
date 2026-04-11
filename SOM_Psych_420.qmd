@@ -1,77 +1,251 @@
 ---
 title: "Self-Organizing Map Project"
-author: 
-  - Lin Qiu
-  - Mahrukh Khan
-  - Jake Douglas Wood
-  - Nicole Barkan
-course: "PSYCH 420"
-date: "April 22, 2026"
-format: html
+author:
+  - name: "Lin Qiu"
+  - name: "Mahrukh Khan"
+  - name: "Jake Douglas Wood"
+  - name: "Nicole Barkan"
+date: April 22, 2026
+format:
+  html:
+    theme: cosmo
+    mainfont: "Times New Roman"
 ---
 
 ## Introduction
 
-Write your introduction here.
+## Methods: Implementation of the Self-Organizing Map Algorithm
 
-Example of display-style equations:
+Not all aspects of the mathematical theory of Self-Organizing Maps (SOM) are essential to implement the model into code. SOMs rely on weight vectors representing nodes that will adapt to input data. The distance between inputs and nodes determines the Best Matching Unit (BMU), which is the node closest to the input. A neighbourhood function allows nearby nodes to adjust alongside the BMU, while the learning rate and neighbourhood width decay control how quickly the map adapts over time. These components constitute the essentials for realizing the model in code (see Kohonen, 2013).
 
-$$
-\Delta w = \eta \cdot h_{ci} \cdot (x - w)
-$$
+### Core Implementation Steps
 
-Where:  
-- $\Delta w$ is the weight update  
-- $\eta$ is the learning rate  
-- $h_{ci}$ is the neighborhood function  
+Before we can feed any data into an SOM, the weight vectors for each node need to be initialized. Since the initial values are arbitrary, this is usually done by randomly generating values for each node. For example, using Python’s numpy library, weights for n_nodes can be generated with:
 
----
-
-## Algorithm
-
-Explain the SOM steps here. Can include equations, e.g.,:
-
-$$
-w_i(t+1) = w_i(t) + \eta(t) \cdot h_{ci}(t) \cdot [x(t) - w_i(t)]
-$$
-
----
-
-## Implementation
-
-Python code chunk example:
-
-```python
-# Simple Python example
-import numpy as np
-
-# Generate sample 2D data
-data = np.random.rand(5,2)
-print("Data shape:", data.shape)
+``` python
+weights = np.random.rand(n_nodes)
 ```
 
-Will eventually add **full SOM code here later**.  
+As the algorithm runs, the weights will adjust in response to the input data to eventually organize into meaningful patterns. By starting with random values, we prevent bias from any initial configuration. To make the initialization more biologically realistic, you can use prior knowledge about node spacing or other biases instead of random values. This allows the SOM to start closer to expected patterns, which can speed up learning or produce more meaningful organization.
 
----
+To organize the strength of weight updates, the SOM needs a way to find the Best Matching Unit (BMU) for each input. This is done by calculating the Euclidean distance between each node’s weight vector and the input vector. The node with the smallest distance to the input vector is then selected as the BMU (using the argmin function) and serves as the anchor for weight updates in the algorithm. In code, this process can be implemented directly. However in lower dimensions, such as 1D (example below), the square of the difference between vectors is enough to find the BMU, since taking the square root does not change which node is closest. This simplification reduces unnecessary computation and keeps the implementation more efficient.
+
+``` python
+def find_bmu(weights, x):
+    distances = (weights - x)**2
+    return np.argmin(distances)
+```
+
+The weight update function ties the SOM’s components together, using the learning rate (η or α) and the neighbourhood function (hci) to control how node weights adapt during training. Classic SOMs use competitive learning, where all nodes are updated toward the input, but the amount of change is graded: the BMU moves the full amount allowed by the learning rate, nearby nodes update less depending on their distance from the BMU, and distant nodes move very little.
+
+``` python
+def update_weights(weights, x, eta, h):
+    weights += eta * h * (x - weights)
+    return weights
+```
+
+In standard SOMs, weights are always updated toward the input, though many variants exist where updates can differ in direction, magnitude, or neighbourhood influence (e.g., repulsive or asymmetric updates; Kwa et al., 2022). The choice of variant depends on the goals of the model.
+
+To support reproducibility, the SOM was trained using different numbers of iterations depending on the demonstration (i.e., 1D and 2D) to illustrate varying convergence behaviour. The learning rate and neighbourhood radius were updated using exponential decay over time based on the initial rates and a time constant (τ). The neighbourhood function followed the distance-dependent weighting function described in Kohonen (2013), in which larger updates are assigned to nodes closer to the BMU in the grid. The randomly generated initial weights were set to a fixed seed to ensure reproducibility across simulations. A full implementation is provided in Appendix A and the GitHub repository.
+
+The training loop is responsible for driving the SOM learning process by repeatedly applying the BMU selection and weight update steps over multiple iterations. For a set number of iterations (defined in the parameters), the algorithm processes each input sample and updates the weights at each training step t. Since the learning rate and neighbourhood width are also updated over time, the neighbourhood width (σ) is constrained to remain above zero to avoid undefined or meaningless values.
+
+``` python
+for t in range(n_iterations):
+    for x in inputs:
+        c = find_bmu(weights, x)
+        alpha = eta(t, eta_initial, tau)
+        sig = max(sigma(t, sigma_initial, tau), 1e-8)
+        h = neighbourhood(n_nodes, c, sig)
+        weights = update_weights(weights, x, alpha, h)
+```
+
+Together, these components form the core SOM algorithm, where weights are iteratively adjusted to reflect the structure of the input data. This implementation can then be extended to different dimensional settings.
+
+------------------------------------------------------------------------
+
+## 1-Dimensional SOM Demonstration
+
+The 1-dimensional (1D) SOM provides a simple way to observe how the nodes gradually organize themselves along a line. Over successive iterations, the weights never completely stop updating; instead, they gradually stabilize as the map adapts less with each step. The figure below demonstrates how the SOM continuously organizes to reflect the structure of the input data.
+
+**Figure 1**\
+Organization of node weights in a 1D SOM across 200 iterations.
+
+![](som_weights.gif)
+
+*Note.* Input values were normalized within a range of 0–1.
+
+------------------------------------------------------------------------
+
+## 2-Dimensional SOM Demonstration
+
+In higher dimensions, such as 2D, the learning mechanisms remain the same as in 1D. However, the nodes are arranged in a grid of neighbourhoods rather than along a single line to allow the map to represent more complex input structures. In the code, this requires storing node weights as a 2D array (or higher-dimensional array), and adjusting neighbourhood calculations to account for grid distances. Here, the input dimension is set to 2 (input_dim = 2), so each node weight is a 2 element vector, matching the input space.
+
+One way to depict higher dimensions onto a 2D grid is as a U-Matrix (Unified Distance Matrix). Shown in figure 2, the U-Matrix shows the distances between neighbouring nodes, with higher values indicating larger gaps and potential cluster boundaries. In the example code below, neighbours in the training loop are defined as nodes horizontal and vertical to the BMU, this is a simplification for demonstration, as most SOMs use distance-based neighbourhoods, not just immediate neighbours.
+
+``` python
+grid_size = int(np.sqrt(n_nodes))
+weights_grid = weights.reshape(grid_size, grid_size, input_dim)
+
+def find_bmu_grid(weights_grid, x):
+    distances = np.sum((weights_grid - x)**2, axis=2)
+    return np.unravel_index(np.argmin(distances), distances.shape)
+```
+
+**Figure 2**\
+U-Matrix and node weight organization of a 2D SOM after 100 iterations.
+
+![](som_side_by_side.gif)
+
+*Note.* In the U-Matrix, darker colours represent larger distances between neighbouring nodes, while lighter colours indicate nodes close together in the input space.
+
+------------------------------------------------------------------------
+
+## Existing Coding Libraries
+
+There are several software libraries available for coding SOMs, ranging from simple implementations to complex parallel training. Highlighted examples discussed here include MiniSom in Python, Somoclu in C++, and Kohonen’s package in R.
+
+MiniSom (Vettigili, 2018) is a Python package that only requires a data array of any number of dimensions and can generate various visualization options such as seed maps, hexagonal topology, and colour quantization. The main benefit of this library is its ability to adapt automatically to the number of dimensions given, unlike our simplified code, which needs to be tweaked each time to handle higher or lower dimensions.
+
+Somoclu, developed by Wittek et al. (2017), is designed for parallelized training of large-scale SOMs. It distributes computations in parallel across multiple CPU cores using OpenMP, across clusters via MPI, and on GPUs using CUDA (enables GPU acceleration). As a result, Somoclu is well suited for very large map sizes and/or high-dimensional datasets. For instance, it is used to analyze large molecular datasets and can be applied to wine classification, such as by clustering fermentation types based on carboxylic acid ratios in different grape varieties (Milovanovic et al., 2019). Although written in C++ it is also accessible through Python, R, Julia and MATLAB.
+
+Lastly, the kohonen R package, created by Wehrens and Buydens (2007), implements the SOM framework originally introduced by Teuvo Kohonen with several variants. The package includes the standard unsupervised SOM, and also supervised extensions (e.g., bi-directional SOMs) and multi-layered SOMs (e.g., supersom) which can integrate multiple data sources. An advantage of this package is its flexibility such as allowing supervised information to be incorporated into the SOM rather than requiring a completely separate model. More recent updates, including version 3.0 (Wehrens & Kruisselbrink, 2018), further expand this flexibility by introducing new elements, including support for different distance measures other than standard Euclidean distance calculations. Overall, there is an ongoing emergence of specialized SOM libraries that serve different purposes, highlighting the method’s ongoing relevance in modern computational neuroscience.
+
+------------------------------------------------------------------------
 
 ## Results
 
-Add plots or other outputs here. Python plotting example:
-
-```python
-import matplotlib.pyplot as plt
-
-plt.scatter(data[:,0], data[:,1])
-plt.title("Sample Data Points")
-plt.show()
-```
-
----
-
 ## Discussion
 
-Write discussion here.
+------------------------------------------------------------------------
 
 ## References
 
-Paste references here.
+Kohonen, T. (2013). Essentials of the self-organizing map. Neural Networks, 37, 52–65. https://doi.org/10.1016/j.neunet.2012.09.018
+
+Kwa, H. L., Leong Kit, J., & Bouffanais, R. (2022). Balancing collective exploration and exploitation in multi-agent and multi-robot systems: A Review. Frontiers in Robotics and AI, 8. https://doi.org/10.3389/frobt.2021.771520
+
+Milovanovic, M., Žeravík, J., Obořil, M., Pelcová, M., Lacina, K., Cakar, U., Petrovic, A., Glatz, Z., & Skládal, P. (2019). A novel method for classification of wine based on organic acids. Food Chemistry, 284, 296–302. https://doi.org/10.1016/j.foodchem.2019.01.113
+
+Vettigli, G. (2018). MiniSom: minimalistic and NumPy-based implementation of the Self Organizing Map. GitHub. https://github.com/JustGlowing/minisom/
+
+Wehrens, R., & Buydens, L. M. (2007). Self- and super-organizing maps in r: The kohonen package. Journal of Statistical Software, 21(5). https://doi.org/10.18637/jss.v021.i05
+
+Wehrens, R., & Kruisselbrink, J. (2018). Flexible self-organizing maps in kohonen 3.0. Journal of Statistical Software, 87(7). https://doi.org/10.18637/jss.v087.i07
+
+Wittek, P., Gao, S. C., Lim, I. S., & Zhao, L. (2017). Somoclu: An efficient parallel library for self-organizing maps. Journal of Statistical Software, 78(9). https://doi.org/10.18637/jss.v078.i09
+
+------------------------------------------------------------------------
+
+## Appendix A: SOM Implementation (Python)
+
+### A1. GitHub Repository
+
+Contains code written in Python for the one and two dimensional implementation of a simple self organizing map model. In addition to the core algorithm is a qmd file for this paper, a 2D sample dataset and files transforming the code into an animation (for visualization of training progression). GitHub Repository: `https://github.com/Linqqqqqq/Psych_420_SOM.git`
+
+### A2. 1D SOM Implementation
+
+``` python
+import numpy as np
+import matplotlib.pyplot as plt
+
+
+# 1D Parameters
+np.random.seed(10)
+n_nodes = 9
+weights = np.random.rand(n_nodes)
+
+inputs = np.array([0.1, 0.4, 0.9, 0.7])
+eta_initial = 0.5
+sigma_initial = 1.0
+n_iterations = 100
+tau = n_iterations / np.log(sigma_initial + 1e-8)
+
+
+def eta(t, eta_initial, tau):
+   return eta_initial * np.exp(-t / tau)
+
+def sigma(t, sigma_initial, tau):
+   return sigma_initial * np.exp(-t / tau)
+
+def find_bmu(weights, x):
+   distances = (weights - x)**2
+   return np.argmin(distances)
+
+def neighbourhood(n_nodes, c, sig):
+   h = np.zeros(n_nodes)
+   for i in range(n_nodes):
+       dist_sq = (i - c)**2
+       h[i] = np.exp(-dist_sq / (2 * sig**2))
+   return h
+
+def update_weights(weights, x, eta, h):
+   weights += eta * h * (x - weights)
+   return weights
+
+for t in range(n_iterations):
+   for x in inputs:
+       c = find_bmu(weights, x)
+       alpha = eta(t, eta_initial, tau)
+       sig = max(sigma(t, sigma_initial, tau), 1e-8)
+       h = neighbourhood(n_nodes, c, sig)
+       weights = update_weights(weights, x, alpha, h)
+```
+
+### A3. 2D SOM Implementation
+
+``` python
+import numpy as np
+import matplotlib.pyplot as plt
+
+# 2D Parameters
+np.random.seed(10)
+n_nodes = 9
+input_dim = 2
+weights = np.random.rand(n_nodes, input_dim)
+
+inputs = np.array([
+   [0.1, 0.2],
+   [0.4, 0.3],
+   [0.9, 0.8],
+   [0.7, 0.6]
+])
+eta_initial = 0.5
+sigma_initial = 1.0
+n_iterations = 100
+tau = n_iterations / np.log(sigma_initial + 1e-8)
+
+def eta(t, eta_initial, tau):
+   return eta_initial * np.exp(-t / tau)
+def sigma(t, sigma_initial, tau):
+   return sigma_initial * np.exp(-t / tau)
+def find_bmu(weights, x):
+   distances = np.sum((weights - x)**2, axis=1)
+   return np.argmin(distances)
+def neighbourhood(n_nodes, c, sig):
+   h = np.zeros(n_nodes)
+   for i in range(n_nodes):
+       dist_sq = (i - c)**2
+       h[i] = np.exp(-dist_sq / (2 * sig**2))
+   return h
+def update_weights(weights, x, eta, h):
+   weights += eta * h[:, np.newaxis] * (x - weights)
+   return weights
+
+# Training Loop
+for t in range(n_iterations):
+   for x in inputs:
+       c = find_bmu(weights, x)
+       alpha = eta(t, eta_initial, tau)
+       sig = max(sigma(t, sigma_initial, tau), 1e-8)
+       h = neighbourhood(n_nodes, c, sig)
+       weights = update_weights(weights, x, alpha, h)
+print("\nFinal weights:\n", weights)
+
+grid_size = int(np.sqrt(n_nodes))
+weights_grid = weights.reshape(grid_size, grid_size, input_dim)
+def find_bmu_grid(weights_grid, x):
+   distances = np.sum((weights_grid - x)**2, axis=2)
+   return np.unravel_index(np.argmin(distances), distances.shape)
+
+```
