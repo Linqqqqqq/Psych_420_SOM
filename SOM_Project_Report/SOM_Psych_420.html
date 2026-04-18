@@ -6,13 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Lin Qiu">
-<meta name="author" content="Mahrukh Khan">
-<meta name="author" content="Jake Douglas Wood">
-<meta name="author" content="Nicole Barkan">
+<meta name="author" content="Lin Qiu, Mahrukh Khan, Jake Douglas Wood, Nicole Barkan">
 <meta name="dcterms.date" content="2026-04-22">
 
-<title>Self-Organizing Map Project</title>
+<title>A Computational Exploration of Self-Organizing Maps</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -110,15 +107,16 @@ window.Quarto = {
 
 </head>
 
-<body class="fullcontent quarto-light">
+<body class="quarto-light">
 
 <div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
-
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="SOM_Psych_420.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></div>
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Self-Organizing Map Project</h1>
+<h1 class="title">A Computational Exploration of Self-Organizing Maps</h1>
 </div>
 
 
@@ -126,12 +124,9 @@ window.Quarto = {
 <div class="quarto-title-meta">
 
     <div>
-    <div class="quarto-title-meta-heading">Authors</div>
+    <div class="quarto-title-meta-heading">Author</div>
     <div class="quarto-title-meta-contents">
-             <p>Lin Qiu </p>
-             <p>Mahrukh Khan </p>
-             <p>Jake Douglas Wood </p>
-             <p>Nicole Barkan </p>
+             <p>Lin Qiu, Mahrukh Khan, Jake Douglas Wood, Nicole Barkan </p>
           </div>
   </div>
     
@@ -150,23 +145,23 @@ window.Quarto = {
 </header>
 
 
-<section id="introduction" class="level2">
-<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
 <p>This report presents a computational exploration of Self-Organizing Maps (SOMs), a class of unsupervised neural networks that model how structured representations can emerge from complex data. The goal of this project is to examine both the theoretical foundations and practical implementation of SOMs within the context of computational neuroscience. We begin by outlining the historical background and motivation behind SOMs, followed by an overview of their core computational principles and relevance to neural systems. We then demonstrate how SOMs can be implemented in code through simplified one-dimensional and two-dimensional examples, highlighting key processes such as best matching unit selection, neighbourhood-based learning, and convergence. Together, this report aims to provide a clear understanding of how SOMs function as both a data analysis tool and a biologically inspired model of learning.</p>
-<section id="historical-background-and-motivation" class="level3">
-<h3 class="anchored" data-anchor-id="historical-background-and-motivation"><strong>Historical Background and Motivation</strong></h3>
+<section id="historical-background-and-motivation" class="level2">
+<h2 class="anchored" data-anchor-id="historical-background-and-motivation"><strong>Historical Background and Motivation</strong></h2>
 <p>Self-Organizing Maps (SOMs) were introduced by Teuvo Kohonen in 1982 as part of his effort to understand how structured representations can emerge in neural systems without external supervision (Kohonen, 1982). At the time, much of artificial intelligence research focused on supervised learning approaches that required explicit target outputs. Kohonen’s work was different because it proposed that meaningful organization could arise through unsupervised learning, using only the statistical structure of the input. This idea was important because it aligned more closely with how learning is believed to occur in the brain, where explicit labels are rarely available.</p>
 <p>Kohonen was particularly motivated by findings in neuroscience showing that the brain organizes sensory information into spatially structured maps. For example, neurons in sensory cortices are arranged so that nearby neurons respond to similar stimulus features. Kohonen aimed to create a computational model that could explain how this type of organization might develop. His model demonstrated that a network of neurons could self-organize into a topographically ordered map through two key mechanisms: competition between neurons to respond to inputs, and cooperation between neighboring neurons during learning (Kohonen, 1982).</p>
 <p>A central insight of Kohonen’s model was that global structure could emerge from simple local learning rules. Each neuron adjusts its weights based on input data, but the adjustment is strongest for the best matching neuron and weaker for nearby neurons. Over time, this process leads to the formation of smooth gradients and organized clusters across the map. This provided one of the first clear demonstrations that topological relationships in data could be preserved in a neural network without explicit programming.</p>
 <p>Kohonen’s work had a significant impact on both machine learning and computational neuroscience. It introduced a practical method for dimensionality reduction and clustering, while also offering a biologically plausible explanation for the formation of cortical maps. Later developments expanded on this original model, but the core idea of self-organization through competitive and neighborhood-based learning remains central to SOMs today (Kohonen, 2001; Kohonen, 2013).</p>
 </section>
-<section id="conceptual-and-computational-significance" class="level3">
-<h3 class="anchored" data-anchor-id="conceptual-and-computational-significance"><strong>Conceptual and Computational Significance</strong></h3>
+<section id="conceptual-and-computational-significance" class="level2">
+<h2 class="anchored" data-anchor-id="conceptual-and-computational-significance"><strong>Conceptual and Computational Significance</strong></h2>
 <p>One of the most important contributions of SOMs is that they show how structured representations can develop from simple learning rules. During training, neurons gradually become specialized to respond to certain types of input. At the same time, nearby neurons develop similar responses, which leads to smooth transitions across the map. As a result, the final representation reflects the structure of the original data (Kohonen, 1982).</p>
 <p>SOMs are useful for several reasons. First, they reduce the dimensionality of data, which makes complex datasets easier to visualize and interpret. Second, they group similar inputs together, allowing for unsupervised clustering. Third, they preserve the relationships between data points, so that similar items remain close together in the map. These features make SOMs especially helpful for exploring datasets where labels are not available.</p>
 </section>
-<section id="applications-to-computational-neuroscience" class="level3">
-<h3 class="anchored" data-anchor-id="applications-to-computational-neuroscience"><strong>Applications to Computational Neuroscience</strong></h3>
+<section id="applications-to-computational-neuroscience" class="level2">
+<h2 class="anchored" data-anchor-id="applications-to-computational-neuroscience"><strong>Applications to Computational Neuroscience</strong></h2>
 <p>Self-Organizing Maps (SOMs) continue to be highly relevant in computational neuroscience because they provide a biologically grounded framework for understanding how neural representations are organized. One of their primary contributions is in modeling the formation of topographic maps in the brain, such as those observed in visual, auditory, and somatosensory cortices. These maps reflect orderly relationships between stimuli and neural responses, and SOMs offer a computational explanation for how such structure can emerge through local learning rules and competitive interactions (Kohonen, 1982).</p>
 <p>More specifically, SOMs have been used to simulate the development of cortical feature maps, including orientation selectivity in the visual cortex. For example, computational studies have shown that SOM-like mechanisms can reproduce key properties of biological visual maps, such as smooth gradients and organized singularities, which are also observed experimentally in cortical tissue (Swindale &amp; Bauer, 1998). This supports the idea that relatively simple self-organizing processes may underlie complex neural organization in the brain.</p>
 <p>In addition to modeling sensory systems, SOMs are increasingly applied to the analysis of neural population data. Modern neuroscience often involves high-dimensional datasets, such as recordings from large populations of neurons or brain imaging data. SOMs are particularly useful in this context because they can reduce dimensionality while preserving meaningful relationships in the data. This allows researchers to identify patterns of neural activity, cluster similar response profiles, and visualize large-scale neural dynamics in an interpretable way (Guérin et al., 2024).</p>
@@ -175,35 +170,35 @@ window.Quarto = {
 <p>SOMs are also used in multimodal and cognitive modeling, where they help explain how different types of information may be integrated and organized in the brain. For instance, extensions of SOMs that incorporate Hebbian learning have been applied to model how multiple sensory inputs can be combined into unified representations. These approaches reflect the distributed and interactive nature of neural processing and support the idea that cognition emerges from coordinated activity across multiple brain systems (Muliukov et al., 2022).</p>
 </section>
 </section>
-<section id="understanding-self-organizing-maps" class="level2">
-<h2 class="anchored" data-anchor-id="understanding-self-organizing-maps"><strong>Understanding Self-Organizing Maps</strong></h2>
+<section id="understanding-self-organizing-maps" class="level1">
+<h1><strong>Understanding Self-Organizing Maps</strong></h1>
 <p>Self-organizing maps, as described by Kohonen, are neural networks capable of mapping high dimensional data onto lower dimensional representations, while keeping intact the relationships within the data. Instead of relying on labelled data and feedback like in supervised learning models, Self-organizing maps (SOMs) utilize a form of Hebbian learning where neurons become self-organized based on the features of the data and the current state of the map. These maps can be thought of as a flexible grid that changes and reshapes to fit input data in an organized way. This ability to organize patterns in the data while maintaining the relationships between the patterns make SOMs a powerful tool for specific tasks requiring visualization or dimensionality reduction. Simpler methods which form separate clusters without preserving relationships between the clusters like k-means would fail on these types of tasks.</p>
-<section id="map-structure" class="level3">
-<h3 class="anchored" data-anchor-id="map-structure"><strong>Map Structure</strong></h3>
+<section id="map-structure" class="level2">
+<h2 class="anchored" data-anchor-id="map-structure"><strong>Map Structure</strong></h2>
 <p>A Self-organizing map consists of a collection of nodes (called neurons) arranged in low dimensional space, usually either a line (1D) or a lattice (2D). These neurons are defined by two values, a weight vector which corresponds to some location in the high dimensional space the inputs come from and the position vector which specifies the neuron’s location in the low dimension map space. Each weight vector consists of a list of numbers, one for each dimension of the input data. So for three dimensional input data each neuron would possess a weight vector with three numbers representing a location in the three dimensional space. This allows the arranging of values from a high dimensional space on a two dimensional grid. These weight vectors are initially randomized for each neuron on the grid leading to a structure that starts off disorganized and becomes organized over time.</p>
 </section>
-<section id="best-matching-unit" class="level3">
-<h3 class="anchored" data-anchor-id="best-matching-unit"><strong>Best Matching Unit</strong></h3>
+<section id="best-matching-unit" class="level2">
+<h2 class="anchored" data-anchor-id="best-matching-unit"><strong>Best Matching Unit</strong></h2>
 <p>Each high dimensional input has a vector representing its location in the high dimensional space which reflects the values of its features. This input vector is then compared to the weight vector of each neuron on the grid. The node with a weight vector closest to the input vector is declared the best matching unit (BMU). Euclidean distance is used for BMU determination. Euclidean distance represents the shortest path between points in space using the Pythagorean theorem. The euclidean distance between two points in n-dimensional space is given by the formula <span class="math display">\[
 D_{ij}^2 = \sum_{v=1}^{n} \left(x_{vi} - x_{vj}\right)^2
 \]</span> Organization begins and structure is built up through this pairing of input vector with their BMU, or the neuron with the most similar weight vector according to euclidean distance. In self-organizing maps the organization is driven solely by the similarity between inputs and the best matching units, foregoing error driven updates common in supervised learning.</p>
 </section>
-<section id="learning-and-neighbourhood-function" class="level3">
-<h3 class="anchored" data-anchor-id="learning-and-neighbourhood-function"><strong>Learning and Neighbourhood Function</strong></h3>
+<section id="learning-and-neighbourhood-function" class="level2">
+<h2 class="anchored" data-anchor-id="learning-and-neighbourhood-function"><strong>Learning and Neighbourhood Function</strong></h2>
 <p>When each input vector is associated with its best matching unit a learning rule will be triggered. This learning rule causes the weight vector of the best matching unit to shift and become more similar to the input. The magnitude of the weight vector update is determined by the learning rule. Unlike simpler models however, SOMs update not only the best matching unit but nearby nodes on the grid as well. This is known as neighbourhood cooperation, defined by a neighbourhood function within the learning rule. This is typically a gaussian function where neurons closer to the best matching unit are updated more than neurons farther away leading to a smooth decrease in influence the farther you get from the best matching unit. The formula: <span class="math display">\[
 w_i(t+1) = w_i(t)+\eta(t)\, h_{ci}(t)\, \big(x-w_i(t)\big)
 \]</span> describes the learning rule. The different terms describe the original weight vector, the direction towards the input, how big the shift in weight vectors will be, and how much the node is influenced by the BMU based on distance (neighbourhood rule). This creates coordinated learning across the map and smooth transitions between categories. The radius of the neighbourhood function often decreases over time, establishing global organization at first and updating small regions later to fine tune. This forms meaningful and stable patterns. This specific way of learning allows for key features of self-organizing maps like dimensionality reduction and topology preservation. This means that high dimensional data is reduced to a lower dimension that is easier to visualize and interpret while the high dimensional relationships in the data remain intact.</p>
 </section>
-<section id="convergence-and-stability" class="level3">
-<h3 class="anchored" data-anchor-id="convergence-and-stability"><strong>Convergence and Stability</strong></h3>
+<section id="convergence-and-stability" class="level2">
+<h2 class="anchored" data-anchor-id="convergence-and-stability"><strong>Convergence and Stability</strong></h2>
 <p>When discussing self-organizing maps, convergence refers to the point at which weight vectors change very little between iterations, leading to a stable map structure. After convergence small updates will still occur but they will not meaningfully change the map due to the structure becoming more organized and the neighbourhood function decaying. Self-organizing maps can converge in different ways depending on the parameters. If the neighbourhood function decays too quickly the map may stop significantly updating before it has reached an organized structure. If they decay too slowly the map will fail to stabilize and continue to change. Convergence of the SOM reaches will not look the same every time, due to the random initialization of the weight vectors leading to different converged map structures. This is why using a fixed seed, or the same set of randomly generated weight vectors, will allow for reproducibility each time the code is run. Even with a fixed seed, to reliably recreate a map final map structure the parameters and input order must also be the same. However since this fixed seed is still an arbitrary set of randomly generated numbers there is no one perfect map, as any set of initial weight vectors will lead to a different representation of the data. To gauge how effective a self-organizing map has done at organizing data, quantization error and topographic error are often used. Quantization error measures how close inputs are to their best matching unit, while topographic representation measures how well neighbourhood relationships are preserved. The convergence of SOMs may also reflect biological processes like competition, cooperation and adaptation. They resemble how nearby neurons respond to similar stimuli and how these organized structures emerge without supervision.</p>
 </section>
 </section>
-<section id="methods-implementation-of-the-self-organizing-map-algorithm" class="level2">
-<h2 class="anchored" data-anchor-id="methods-implementation-of-the-self-organizing-map-algorithm">Methods: Implementation of the Self-Organizing Map Algorithm</h2>
+<section id="methods-implementation-of-the-self-organizing-map-algorithm" class="level1">
+<h1>Methods: Implementation of the Self-Organizing Map Algorithm</h1>
 <p>Not all aspects of the mathematical theory of Self-Organizing Maps (SOM) are essential to implement the model into code. SOMs rely on weight vectors representing nodes that will adapt to input data. The distance between inputs and nodes determines the Best Matching Unit (BMU), which is the node closest to the input. A neighbourhood function allows nearby nodes to adjust alongside the BMU, while the learning rate and neighbourhood width decay control how quickly the map adapts over time. These components constitute the essentials for realizing the model in code (see Kohonen, 2013).</p>
-<section id="core-implementation-steps" class="level3">
-<h3 class="anchored" data-anchor-id="core-implementation-steps">Core Implementation Steps</h3>
+<section id="core-implementation-steps" class="level2">
+<h2 class="anchored" data-anchor-id="core-implementation-steps">Core Implementation Steps</h2>
 <p>Before we can feed any data into an SOM, the weight vectors for each node need to be initialized. Since the initial values are arbitrary, this is usually done by randomly generating values for each node. For example, using Python’s numpy library, weights for n_nodes can be generated with:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>weights <span class="op">=</span> np.random.rand(n_nodes)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>As the algorithm runs, the weights will adjust in response to the input data to eventually organize into meaningful patterns. By starting with random values, we prevent bias from any initial configuration. To make the initialization more biologically realistic, you can use prior knowledge about node spacing or other biases instead of random values. This allows the SOM to start closer to expected patterns, which can speed up learning or produce more meaningful organization.</p>
@@ -229,17 +224,18 @@ w_i(t+1) = w_i(t)+\eta(t)\, h_{ci}(t)\, \big(x-w_i(t)\big)
 <hr>
 </section>
 </section>
-<section id="dimensional-som-demonstration" class="level2">
-<h2 class="anchored" data-anchor-id="dimensional-som-demonstration">1-Dimensional SOM Demonstration</h2>
+<section id="dimensional-som-demonstration" class="level1">
+<h1>1-Dimensional SOM Demonstration</h1>
 <p>The 1-dimensional (1D) SOM provides a simple way to observe how the nodes gradually organize themselves along a line. Over successive iterations, the weights never completely stop updating; instead, they gradually stabilize as the map adapts less with each step. The figure below demonstrates how the SOM continuously organizes to reflect the structure of the input data.</p>
+<div class="figure">
 <p><strong>Figure 1</strong><br>
 <em>Organization of Node Weights in a 1D SOM across 200 Iterations</em></p>
 <p><img src="./images/som_weights.gif" class="img-fluid"></p>
-<p><em>Note.</em> Input values were normalized within a range of 0–1.</p>
-<hr>
+<p> Input values were normalized within a range of 0–1.</p>
+</div>
 </section>
-<section id="dimensional-som-demonstration-1" class="level2">
-<h2 class="anchored" data-anchor-id="dimensional-som-demonstration-1">2-Dimensional SOM Demonstration</h2>
+<section id="dimensional-som-demonstration-1" class="level1">
+<h1>2-Dimensional SOM Demonstration</h1>
 <p>In higher dimensions, such as 2D, the learning mechanisms remain the same as in 1D. However, the nodes are arranged in a grid of neighbourhoods rather than along a single line to allow the map to represent more complex input structures. In the code, this requires storing node weights as a 2D array (or higher-dimensional array), and adjusting neighbourhood calculations to account for grid distances. Here, the input dimension is set to 2 (input_dim = 2), so each node weight is a 2 element vector, matching the input space.</p>
 <p>One way to depict higher dimensions onto a 2D grid is as a U-Matrix (Unified Distance Matrix). Shown in figure 2, the U-Matrix shows the distances between neighbouring nodes, with higher values indicating larger gaps and potential cluster boundaries. In the example code below, neighbours in the training loop are defined as nodes horizontal and vertical to the BMU, this is a simplification for demonstration, as most SOMs use distance-based neighbourhoods, not just immediate neighbours.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>grid_size <span class="op">=</span> <span class="bu">int</span>(np.sqrt(n_nodes))</span>
@@ -248,21 +244,23 @@ w_i(t+1) = w_i(t)+\eta(t)\, h_{ci}(t)\, \big(x-w_i(t)\big)
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> find_bmu_grid(weights_grid, x):</span>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    distances <span class="op">=</span> np.<span class="bu">sum</span>((weights_grid <span class="op">-</span> x)<span class="op">**</span><span class="dv">2</span>, axis<span class="op">=</span><span class="dv">2</span>)</span>
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.unravel_index(np.argmin(distances), distances.shape)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p><strong>Figure 2</strong></p>
-<p><em>U-Matrix and Node Weight Organization of a 2D SOM after 100 Iterations</em></p>
+<div class="figure">
+<p><strong>Figure 2</strong><br>
+<em>U-Matrix and Node Weight Organization of a 2D SOM after 100 Iterations</em></p>
 <p><img src="./images/som_side_by_side.gif" class="img-fluid"></p>
-<p><em>Note.</em> In the U-Matrix, darker colours represent larger distances between neighbouring nodes, while lighter colours indicate nodes close together in the input space.</p>
+<p> In the U-Matrix, darker colours represent larger distances between neighbouring nodes, while lighter colours indicate nodes close together in the input space.</p>
+</div>
 </section>
-<section id="existing-coding-libraries" class="level2">
-<h2 class="anchored" data-anchor-id="existing-coding-libraries">Existing Coding Libraries</h2>
+<section id="existing-coding-libraries" class="level1">
+<h1>Existing Coding Libraries</h1>
 <p>There are several software libraries available for coding SOMs, ranging from simple implementations to complex parallel training. Highlighted examples discussed here include MiniSom in Python, Somoclu in C++, and Kohonen’s package in R.</p>
 <p>MiniSom (Vettigili, 2018) is a Python package that only requires a data array of any number of dimensions and can generate various visualization options such as seed maps, hexagonal topology, and colour quantization. The main benefit of this library is its ability to adapt automatically to the number of dimensions given, unlike our simplified code, which needs to be tweaked each time to handle higher or lower dimensions.</p>
 <p>Somoclu, developed by Wittek et al.&nbsp;(2017), is designed for parallelized training of large-scale SOMs. It distributes computations in parallel across multiple CPU cores using OpenMP, across clusters via MPI, and on GPUs using CUDA (enables GPU acceleration). As a result, Somoclu is well suited for very large map sizes and/or high-dimensional datasets. For instance, it is used to analyze large molecular datasets and can be applied to wine classification, such as by clustering fermentation types based on carboxylic acid ratios in different grape varieties (Milovanovic et al., 2019). Although written in C++ it is also accessible through Python, R, Julia and MATLAB.</p>
 <p>Lastly, the kohonen R package, created by Wehrens and Buydens (2007), implements the SOM framework originally introduced by Teuvo Kohonen with several variants. The package includes the standard unsupervised SOM, and also supervised extensions (e.g., bi-directional SOMs) and multi-layered SOMs (e.g., supersom) which can integrate multiple data sources. An advantage of this package is its flexibility such as allowing supervised information to be incorporated into the SOM rather than requiring a completely separate model. More recent updates, including version 3.0 (Wehrens &amp; Kruisselbrink, 2018), further expand this flexibility by introducing new elements, including support for different distance measures other than standard Euclidean distance calculations. Overall, there is an ongoing emergence of specialized SOM libraries that serve different purposes, highlighting the method’s ongoing relevance in modern computational neuroscience.</p>
 <hr>
 </section>
-<section id="results-of-simulations" class="level2">
-<h2 class="anchored" data-anchor-id="results-of-simulations"><strong>Results of Simulations</strong></h2>
+<section id="results-of-simulations" class="level1">
+<h1><strong>Results of Simulations</strong></h1>
 <p>Simulations were conducted to evaluate the behaviour of the Self-Organizing Map (SOM) under different grid sizes and learning rates. The configurations we tested are shown in table 1.</p>
 <p><strong>Table 1.</strong></p>
 <p><em>SOM Results by Grid Size and Learning Rate (η)</em></p>
@@ -290,35 +288,35 @@ w_i(t+1) = w_i(t)+\eta(t)\, h_{ci}(t)\, \big(x-w_i(t)\big)
 </tr>
 </tbody>
 </table>
-<section id="effect-of-learning-rate-η" class="level3">
-<h3 class="anchored" data-anchor-id="effect-of-learning-rate-η"><strong>1 – Effect of Learning Rate (η)</strong></h3>
+<section id="effect-of-learning-rate-η" class="level2">
+<h2 class="anchored" data-anchor-id="effect-of-learning-rate-η"><strong>1 – Effect of Learning Rate (η)</strong></h2>
 <p>The learning rate plays a significant role in how quickly and effectively the SOM organizes itself. In this model, weight updates are proportional to the learning rate, meaning that larger values of η result in more substantial adjustments during each iteration. The results show that a higher learning rate (η = 0.5) produced a more structured and visually organized map compared to a lower learning rate (η = 0.1) in 100 iterations. This is because the larger learning rate allows the weights to move more quickly toward the input values, enabling faster organization within a limited number of training iterations. In contrast, a smaller learning rate led to slower adaptation, resulting in less clearly defined structure over the same number of iterations. However, while a higher learning rate improves short-term organization, excessively large values may introduce instability and prevent proper convergence.</p>
 </section>
-<section id="effect-of-grid-size" class="level3">
-<h3 class="anchored" data-anchor-id="effect-of-grid-size"><strong>2 – Effect of Grid Size</strong></h3>
+<section id="effect-of-grid-size" class="level2">
+<h2 class="anchored" data-anchor-id="effect-of-grid-size"><strong>2 – Effect of Grid Size</strong></h2>
 <p>The size of the SOM grid also influences how the learning rate affects the overall organization. Although the learning rate is computed using the same decay function regardless of grid size, its practical impact differs depending on the number of nodes. For the larger 10×10 grid, the same learning rate must adjust a greater number of neurons. As a result, a smaller learning rate (η = 0.1) was less effective in producing noticeable organization within 100 iterations. The map appeared less structured compared to the smaller grid under similar conditions. In contrast, using a higher learning rate (η = 0.5) in the larger grid improved the formation of visible patterns and structure. The increased update magnitude allowed the SOM to better organize the expanded set of weights.</p>
 </section>
-<section id="relevance-of-self-organizing-maps" class="level3">
-<h3 class="anchored" data-anchor-id="relevance-of-self-organizing-maps"><strong>Relevance of Self-Organizing Maps</strong></h3>
+<section id="relevance-of-self-organizing-maps" class="level2">
+<h2 class="anchored" data-anchor-id="relevance-of-self-organizing-maps"><strong>Relevance of Self-Organizing Maps</strong></h2>
 <p>Self-Organizing Maps remain relevant as a tool for unsupervised data exploration and visualization, particularly when working with complex or high-dimensional datasets. As highlighted by Wehrens and Buydens (2007), SOMs are effective because they allow data to be visualized without relying on strict statistical assumptions, making them useful in exploratory analysis.</p>
 <p>An important strength of SOMs is their ability to preserve topological relationships, meaning that similar data points are mapped to nearby neurons. This makes them valuable for identifying clusters, patterns, and anomalies in situations where labeled data is not available. As a result, SOMs are especially useful in early-stage analysis, where the underlying structure of the data is not yet known. SOMs also provide a level of interpretability that more complex machine learning models tend to lack. Rather than focusing purely on prediction, they help users understand how data is organized.</p>
 </section>
-<section id="limitations-of-self-organizing-maps" class="level3">
-<h3 class="anchored" data-anchor-id="limitations-of-self-organizing-maps"><strong>Limitations of Self-Organizing Maps</strong></h3>
+<section id="limitations-of-self-organizing-maps" class="level2">
+<h2 class="anchored" data-anchor-id="limitations-of-self-organizing-maps"><strong>Limitations of Self-Organizing Maps</strong></h2>
 <p>Despite their advantages, SOMs have several limitations that restrict their use in modern machine learning applications. First, SOMs are generally not meant for predictive performance. While they are effective for visualization and approximate clustering, they are typically outperformed by other models in tasks requiring high classification accuracy or advanced representation learning. Second, SOMs are sensitive to parameter choices. As noted in Kohonen’s original work, successful organization depends on appropriate conditions during training. Key parameters such as learning rate, map size, and neighborhood radius must be appropriately selected. Different choices can lead to significantly different results, meaning that the method may lack consistency across runs.&nbsp;</p>
 <p>Several factors contribute to the sensitivity of Self-Organizing Maps. The initialization of the model plays a role, as random starting weights can lead to different final map configurations. The chosen map size is also important; too few neurons may not adequately capture the underlying data structure, while too many can result in overfitting. The learning rate must be carefully selected, since values that are too small can slow convergence, whereas excessively large values may cause instability during training. Finally, the neighborhood function significantly affects performance, a small radius can limit generalization, while a large radius may reduce important structural detail.</p>
 <p>SOMs are less commonly used in modern machine learning pipelines, where more flexible and scalable methods are often preferred. While SOMs remain useful for interpretation and visualization, their limitations show that they are better applied as exploratory tools rather than primary predictive models.</p>
 </section>
-<section id="general-assessment" class="level3">
-<h3 class="anchored" data-anchor-id="general-assessment"><strong>General Assessment</strong></h3>
+<section id="general-assessment" class="level2">
+<h2 class="anchored" data-anchor-id="general-assessment"><strong>General Assessment</strong></h2>
 <p>This presentation provides a clear and well-structured introduction to Self-Organizing Maps, especially for students learning the concept for the first time. One of the main strengths is the step-by-step explanation of key processes in SOMs, such as best matching unit selection, neighborhood-based learning, and convergence. Breaking the algorithm into smaller components, and showing how it works in both one-dimensional and two-dimensional examples, effectively separates abstract ideas into ones that are easier to understand. By also including simple code examples throughout, it helps connect the theory directly to how SOMs are actually implemented.</p>
 <p>The use of visualizations, such as the 1D plots and 2D U-Matrix, adds strong instructional value by showing how the map organizes over time. These figures make it easier to see patterns that would be harder to understand from code or equations alone. The Results of Simulations section clearly demonstrates how parameters like learning rate and grid size affect the outcome. This can encourage a more thoughtful understanding of how the model changes and varies based on many factors.</p>
 <p>From a teaching perspective, this report could serve as a solid foundation for developing further course material. The clear separation between background, explanation, implementation, and results makes it easy to expand each section into more detailed lessons.</p>
 <hr>
 </section>
 </section>
-<section id="references" class="level2">
-<h2 class="anchored" data-anchor-id="references">References</h2>
+<section id="references" class="level1">
+<h1>References</h1>
 <p>Bishop, C. M. (2006). Pattern recognition and machine learning. Springer</p>
 <p>Benkő, Z., Stippinger, M., Bencze, A., Bazsó, F., Telcs, A., &amp; Somogyvári, Z. (2026). Inference of hidden common driver dynamics by anisotropic self-organizing neural networks. Neural Networks, 194, 108113. <a href="https://doi.org/10.1016/j.neunet.2025.108113" class="uri">https://doi.org/10.1016/j.neunet.2025.108113</a></p>
 <p>Dehghani, A. O., Qian, X., Farahani, A., &amp; Bashivan, P. (2025). Credit-based self-organizing maps: Training deep topographic networks with minimal performance degradation [Conference presentation slides]. International Conference on Learning Representations (ICLR 2025).<a href="https://iclr.cc/media/iclr-2025/Slides/27851.pdf" class="uri">https://iclr.cc/media/iclr-2025/Slides/27851.pdf</a></p>
