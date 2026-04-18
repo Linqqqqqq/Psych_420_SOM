@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.35">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Lin Qiu">
+<meta name="author" content="Mahrukh Khan">
+<meta name="author" content="Jake Douglas Wood">
+<meta name="author" content="Nicole Barkan">
+<meta name="dcterms.date" content="2026-04-22">
+
+<title>Self-Organizing Map Project</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="SOM_Psych_420_files/libs/clipboard/clipboard.min.js"></script>
+<script src="SOM_Psych_420_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="SOM_Psych_420_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="SOM_Psych_420_files/libs/quarto-html/popper.min.js"></script>
+<script src="SOM_Psych_420_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="SOM_Psych_420_files/libs/quarto-html/anchor.min.js"></script>
+<link href="SOM_Psych_420_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="SOM_Psych_420_files/libs/quarto-html/quarto-syntax-highlighting-46f66b053e56abd73bb6e954d61a315b.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="SOM_Psych_420_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="SOM_Psych_420_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="SOM_Psych_420_files/libs/bootstrap/bootstrap-718292469ff970cd111a991370333c2b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="fullcontent quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Self-Organizing Map Project</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Authors</div>
+    <div class="quarto-title-meta-contents">
+             <p>Lin Qiu </p>
+             <p>Mahrukh Khan </p>
+             <p>Jake Douglas Wood </p>
+             <p>Nicole Barkan </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">April 22, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>This report presents a computational exploration of Self-Organizing Maps (SOMs), a class of unsupervised neural networks that model how structured representations can emerge from complex data. The goal of this project is to examine both the theoretical foundations and practical implementation of SOMs within the context of computational neuroscience. We begin by outlining the historical background and motivation behind SOMs, followed by an overview of their core computational principles and relevance to neural systems. We then demonstrate how SOMs can be implemented in code through simplified one-dimensional and two-dimensional examples, highlighting key processes such as best matching unit selection, neighbourhood-based learning, and convergence. Together, this report aims to provide a clear understanding of how SOMs function as both a data analysis tool and a biologically inspired model of learning.</p>
+<section id="historical-background-and-motivation" class="level3">
+<h3 class="anchored" data-anchor-id="historical-background-and-motivation"><strong>Historical Background and Motivation</strong></h3>
+<p>Self-Organizing Maps (SOMs) were introduced by Teuvo Kohonen in 1982 as part of his effort to understand how structured representations can emerge in neural systems without external supervision (Kohonen, 1982). At the time, much of artificial intelligence research focused on supervised learning approaches that required explicit target outputs. Kohonen’s work was different because it proposed that meaningful organization could arise through unsupervised learning, using only the statistical structure of the input. This idea was important because it aligned more closely with how learning is believed to occur in the brain, where explicit labels are rarely available.</p>
+<p>Kohonen was particularly motivated by findings in neuroscience showing that the brain organizes sensory information into spatially structured maps. For example, neurons in sensory cortices are arranged so that nearby neurons respond to similar stimulus features. Kohonen aimed to create a computational model that could explain how this type of organization might develop. His model demonstrated that a network of neurons could self-organize into a topographically ordered map through two key mechanisms: competition between neurons to respond to inputs, and cooperation between neighboring neurons during learning (Kohonen, 1982).</p>
+<p>A central insight of Kohonen’s model was that global structure could emerge from simple local learning rules. Each neuron adjusts its weights based on input data, but the adjustment is strongest for the best matching neuron and weaker for nearby neurons. Over time, this process leads to the formation of smooth gradients and organized clusters across the map. This provided one of the first clear demonstrations that topological relationships in data could be preserved in a neural network without explicit programming.</p>
+<p>Kohonen’s work had a significant impact on both machine learning and computational neuroscience. It introduced a practical method for dimensionality reduction and clustering, while also offering a biologically plausible explanation for the formation of cortical maps. Later developments expanded on this original model, but the core idea of self-organization through competitive and neighborhood-based learning remains central to SOMs today (Kohonen, 2001; Kohonen, 2013).</p>
+</section>
+<section id="conceptual-and-computational-significance" class="level3">
+<h3 class="anchored" data-anchor-id="conceptual-and-computational-significance"><strong>Conceptual and Computational Significance</strong></h3>
+<p>One of the most important contributions of SOMs is that they show how structured representations can develop from simple learning rules. During training, neurons gradually become specialized to respond to certain types of input. At the same time, nearby neurons develop similar responses, which leads to smooth transitions across the map. As a result, the final representation reflects the structure of the original data (Kohonen, 1982).</p>
+<p>SOMs are useful for several reasons. First, they reduce the dimensionality of data, which makes complex datasets easier to visualize and interpret. Second, they group similar inputs together, allowing for unsupervised clustering. Third, they preserve the relationships between data points, so that similar items remain close together in the map. These features make SOMs especially helpful for exploring datasets where labels are not available.</p>
+</section>
+<section id="applications-to-computational-neuroscience" class="level3">
+<h3 class="anchored" data-anchor-id="applications-to-computational-neuroscience"><strong>Applications to Computational Neuroscience</strong></h3>
+<p>Self-Organizing Maps (SOMs) continue to be highly relevant in computational neuroscience because they provide a biologically grounded framework for understanding how neural representations are organized. One of their primary contributions is in modeling the formation of topographic maps in the brain, such as those observed in visual, auditory, and somatosensory cortices. These maps reflect orderly relationships between stimuli and neural responses, and SOMs offer a computational explanation for how such structure can emerge through local learning rules and competitive interactions (Kohonen, 1982).</p>
+<p>More specifically, SOMs have been used to simulate the development of cortical feature maps, including orientation selectivity in the visual cortex. For example, computational studies have shown that SOM-like mechanisms can reproduce key properties of biological visual maps, such as smooth gradients and organized singularities, which are also observed experimentally in cortical tissue (Swindale &amp; Bauer, 1998). This supports the idea that relatively simple self-organizing processes may underlie complex neural organization in the brain.</p>
+<p>In addition to modeling sensory systems, SOMs are increasingly applied to the analysis of neural population data. Modern neuroscience often involves high-dimensional datasets, such as recordings from large populations of neurons or brain imaging data. SOMs are particularly useful in this context because they can reduce dimensionality while preserving meaningful relationships in the data. This allows researchers to identify patterns of neural activity, cluster similar response profiles, and visualize large-scale neural dynamics in an interpretable way (Guérin et al., 2024).</p>
+<p>Recent research has also expanded the role of SOMs in studying dynamical systems and neural processes over time. For example, newer variants such as anisotropic self-organizing maps have been developed to infer hidden structures in complex time series data, including latent drivers of neural activity. These models can reconstruct underlying dynamics more accurately than traditional methods, highlighting the continued relevance of SOM-based approaches in analyzing nonlinear neural systems (Benko et al., 2026).</p>
+<p>Another important area of application is the integration of SOMs with modern machine learning frameworks. Recent work has combined SOMs with deep learning architectures to create models that maintain biologically realistic topographic organization while still achieving strong performance on tasks such as visual recognition. These hybrid models attempt to better replicate the organization of cortical areas, such as the ventral visual stream, where neurons with similar functions are spatially clustered (Dehghani et al., 2025). This line of research is particularly important because it bridges the gap between traditional neuroscience models and contemporary artificial intelligence systems.</p>
+<p>SOMs are also used in multimodal and cognitive modeling, where they help explain how different types of information may be integrated and organized in the brain. For instance, extensions of SOMs that incorporate Hebbian learning have been applied to model how multiple sensory inputs can be combined into unified representations. These approaches reflect the distributed and interactive nature of neural processing and support the idea that cognition emerges from coordinated activity across multiple brain systems (Muliukov et al., 2022).</p>
+</section>
+</section>
+<section id="understanding-self-organizing-maps" class="level2">
+<h2 class="anchored" data-anchor-id="understanding-self-organizing-maps"><strong>Understanding Self-Organizing Maps</strong></h2>
+<p>Self-organizing maps, as described by Kohonen, are neural networks capable of mapping high dimensional data onto lower dimensional representations, while keeping intact the relationships within the data. Instead of relying on labelled data and feedback like in supervised learning models, Self-organizing maps (SOMs) utilize a form of Hebbian learning where neurons become self-organized based on the features of the data and the current state of the map. These maps can be thought of as a flexible grid that changes and reshapes to fit input data in an organized way. This ability to organize patterns in the data while maintaining the relationships between the patterns make SOMs a powerful tool for specific tasks requiring visualization or dimensionality reduction. Simpler methods which form separate clusters without preserving relationships between the clusters like k-means would fail on these types of tasks.</p>
+<section id="map-structure" class="level3">
+<h3 class="anchored" data-anchor-id="map-structure"><strong>Map Structure</strong></h3>
+<p>A Self-organizing map consists of a collection of nodes (called neurons) arranged in low dimensional space, usually either a line (1D) or a lattice (2D). These neurons are defined by two values, a weight vector which corresponds to some location in the high dimensional space the inputs come from and the position vector which specifies the neuron’s location in the low dimension map space. Each weight vector consists of a list of numbers, one for each dimension of the input data. So for three dimensional input data each neuron would possess a weight vector with three numbers representing a location in the three dimensional space. This allows the arranging of values from a high dimensional space on a two dimensional grid. These weight vectors are initially randomized for each neuron on the grid leading to a structure that starts off disorganized and becomes organized over time.</p>
+</section>
+<section id="best-matching-unit" class="level3">
+<h3 class="anchored" data-anchor-id="best-matching-unit"><strong>Best Matching Unit</strong></h3>
+<p>Each high dimensional input has a vector representing its location in the high dimensional space which reflects the values of its features. This input vector is then compared to the weight vector of each neuron on the grid. The node with a weight vector closest to the input vector is declared the best matching unit (BMU). Euclidean distance is used for BMU determination. Euclidean distance represents the shortest path between points in space using the Pythagorean theorem. The euclidean distance between two points in n-dimensional space is given by the formula <span class="math display">\[
+D_{ij}^2 = \sum_{v=1}^{n} \left(x_{vi} - x_{vj}\right)^2
+\]</span> Organization begins and structure is built up through this pairing of input vector with their BMU, or the neuron with the most similar weight vector according to euclidean distance. In self-organizing maps the organization is driven solely by the similarity between inputs and the best matching units, foregoing error driven updates common in supervised learning.</p>
+</section>
+<section id="learning-and-neighbourhood-function" class="level3">
+<h3 class="anchored" data-anchor-id="learning-and-neighbourhood-function"><strong>Learning and Neighbourhood Function</strong></h3>
+<p>When each input vector is associated with its best matching unit a learning rule will be triggered. This learning rule causes the weight vector of the best matching unit to shift and become more similar to the input. The magnitude of the weight vector update is determined by the learning rule. Unlike simpler models however, SOMs update not only the best matching unit but nearby nodes on the grid as well. This is known as neighbourhood cooperation, defined by a neighbourhood function within the learning rule. This is typically a gaussian function where neurons closer to the best matching unit are updated more than neurons farther away leading to a smooth decrease in influence the farther you get from the best matching unit. The formula: <span class="math display">\[
+w_i(t+1) = w_i(t)+\eta(t)\, h_{ci}(t)\, \big(x-w_i(t)\big)
+\]</span> describes the learning rule. The different terms describe the original weight vector, the direction towards the input, how big the shift in weight vectors will be, and how much the node is influenced by the BMU based on distance (neighbourhood rule). This creates coordinated learning across the map and smooth transitions between categories. The radius of the neighbourhood function often decreases over time, establishing global organization at first and updating small regions later to fine tune. This forms meaningful and stable patterns. This specific way of learning allows for key features of self-organizing maps like dimensionality reduction and topology preservation. This means that high dimensional data is reduced to a lower dimension that is easier to visualize and interpret while the high dimensional relationships in the data remain intact.</p>
+</section>
+<section id="convergence-and-stability" class="level3">
+<h3 class="anchored" data-anchor-id="convergence-and-stability"><strong>Convergence and Stability</strong></h3>
+<p>When discussing self-organizing maps, convergence refers to the point at which weight vectors change very little between iterations, leading to a stable map structure. After convergence small updates will still occur but they will not meaningfully change the map due to the structure becoming more organized and the neighbourhood function decaying. Self-organizing maps can converge in different ways depending on the parameters. If the neighbourhood function decays too quickly the map may stop significantly updating before it has reached an organized structure. If they decay too slowly the map will fail to stabilize and continue to change. Convergence of the SOM reaches will not look the same every time, due to the random initialization of the weight vectors leading to different converged map structures. This is why using a fixed seed, or the same set of randomly generated weight vectors, will allow for reproducibility each time the code is run. Even with a fixed seed, to reliably recreate a map final map structure the parameters and input order must also be the same. However since this fixed seed is still an arbitrary set of randomly generated numbers there is no one perfect map, as any set of initial weight vectors will lead to a different representation of the data. To gauge how effective a self-organizing map has done at organizing data, quantization error and topographic error are often used. Quantization error measures how close inputs are to their best matching unit, while topographic representation measures how well neighbourhood relationships are preserved. The convergence of SOMs may also reflect biological processes like competition, cooperation and adaptation. They resemble how nearby neurons respond to similar stimuli and how these organized structures emerge without supervision.</p>
+</section>
+</section>
+<section id="methods-implementation-of-the-self-organizing-map-algorithm" class="level2">
+<h2 class="anchored" data-anchor-id="methods-implementation-of-the-self-organizing-map-algorithm">Methods: Implementation of the Self-Organizing Map Algorithm</h2>
+<p>Not all aspects of the mathematical theory of Self-Organizing Maps (SOM) are essential to implement the model into code. SOMs rely on weight vectors representing nodes that will adapt to input data. The distance between inputs and nodes determines the Best Matching Unit (BMU), which is the node closest to the input. A neighbourhood function allows nearby nodes to adjust alongside the BMU, while the learning rate and neighbourhood width decay control how quickly the map adapts over time. These components constitute the essentials for realizing the model in code (see Kohonen, 2013).</p>
+<section id="core-implementation-steps" class="level3">
+<h3 class="anchored" data-anchor-id="core-implementation-steps">Core Implementation Steps</h3>
+<p>Before we can feed any data into an SOM, the weight vectors for each node need to be initialized. Since the initial values are arbitrary, this is usually done by randomly generating values for each node. For example, using Python’s numpy library, weights for n_nodes can be generated with:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>weights <span class="op">=</span> np.random.rand(n_nodes)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>As the algorithm runs, the weights will adjust in response to the input data to eventually organize into meaningful patterns. By starting with random values, we prevent bias from any initial configuration. To make the initialization more biologically realistic, you can use prior knowledge about node spacing or other biases instead of random values. This allows the SOM to start closer to expected patterns, which can speed up learning or produce more meaningful organization.</p>
+<p>To organize the strength of weight updates, the SOM needs a way to find the Best Matching Unit (BMU) for each input. This is done by calculating the Euclidean distance between each node’s weight vector and the input vector. The node with the smallest distance to the input vector is then selected as the BMU (using the argmin function) and serves as the anchor for weight updates in the algorithm. In code, this process can be implemented directly. However in lower dimensions, such as 1D (example below), the square of the difference between vectors is enough to find the BMU, since taking the square root does not change which node is closest. This simplification reduces unnecessary computation and keeps the implementation more efficient.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> find_bmu(weights, x):</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    distances <span class="op">=</span> (weights <span class="op">-</span> x)<span class="op">**</span><span class="dv">2</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.argmin(distances)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The weight update function ties the SOM’s components together, using the learning rate (η or α) and the neighbourhood function (hci) to control how node weights adapt during training. Classic SOMs use competitive learning, where all nodes are updated toward the input, but the amount of change is graded: the BMU moves the full amount allowed by the learning rate, nearby nodes update less depending on their distance from the BMU, and distant nodes move very little.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> update_weights(weights, x, eta, h):</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    weights <span class="op">+=</span> eta <span class="op">*</span> h <span class="op">*</span> (x <span class="op">-</span> weights)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> weights</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>In standard SOMs, weights are always updated toward the input, though many variants exist where updates can differ in direction, magnitude, or neighbourhood influence (e.g., repulsive or asymmetric updates; Kwa et al., 2022). The choice of variant depends on the goals of the model.</p>
+<p>To support reproducibility, the SOM was trained using different numbers of iterations depending on the demonstration (i.e., 1D and 2D) to illustrate varying convergence behaviour. The learning rate and neighbourhood radius were updated using exponential decay over time based on the initial rates and a time constant (τ). The neighbourhood function followed the distance-dependent weighting function described in Kohonen (2013), in which larger updates are assigned to nodes closer to the BMU in the grid. The randomly generated initial weights were set to a fixed seed to ensure reproducibility across simulations. A full implementation is provided in Appendix A and the GitHub repository.</p>
+<p>The training loop is responsible for driving the SOM learning process by repeatedly applying the BMU selection and weight update steps over multiple iterations. For a set number of iterations (defined in the parameters), the algorithm processes each input sample and updates the weights at each training step t. Since the learning rate and neighbourhood width are also updated over time, the neighbourhood width (σ) is constrained to remain above zero to avoid undefined or meaningless values.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> t <span class="kw">in</span> <span class="bu">range</span>(n_iterations):</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> x <span class="kw">in</span> inputs:</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>        c <span class="op">=</span> find_bmu(weights, x)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>        alpha <span class="op">=</span> eta(t, eta_initial, tau)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>        sig <span class="op">=</span> <span class="bu">max</span>(sigma(t, sigma_initial, tau), <span class="fl">1e-8</span>)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>        h <span class="op">=</span> neighbourhood(n_nodes, c, sig)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>        weights <span class="op">=</span> update_weights(weights, x, alpha, h)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Together, these components form the core SOM algorithm, where weights are iteratively adjusted to reflect the structure of the input data. This implementation can then be extended to different dimensional settings.</p>
+<hr>
+</section>
+</section>
+<section id="dimensional-som-demonstration" class="level2">
+<h2 class="anchored" data-anchor-id="dimensional-som-demonstration">1-Dimensional SOM Demonstration</h2>
+<p>The 1-dimensional (1D) SOM provides a simple way to observe how the nodes gradually organize themselves along a line. Over successive iterations, the weights never completely stop updating; instead, they gradually stabilize as the map adapts less with each step. The figure below demonstrates how the SOM continuously organizes to reflect the structure of the input data.</p>
+<p><strong>Figure 1</strong><br>
+<em>Organization of Node Weights in a 1D SOM across 200 Iterations</em></p>
+<p><img src="./images/som_weights.gif" class="img-fluid"></p>
+<p><em>Note.</em> Input values were normalized within a range of 0–1.</p>
+<hr>
+</section>
+<section id="dimensional-som-demonstration-1" class="level2">
+<h2 class="anchored" data-anchor-id="dimensional-som-demonstration-1">2-Dimensional SOM Demonstration</h2>
+<p>In higher dimensions, such as 2D, the learning mechanisms remain the same as in 1D. However, the nodes are arranged in a grid of neighbourhoods rather than along a single line to allow the map to represent more complex input structures. In the code, this requires storing node weights as a 2D array (or higher-dimensional array), and adjusting neighbourhood calculations to account for grid distances. Here, the input dimension is set to 2 (input_dim = 2), so each node weight is a 2 element vector, matching the input space.</p>
+<p>One way to depict higher dimensions onto a 2D grid is as a U-Matrix (Unified Distance Matrix). Shown in figure 2, the U-Matrix shows the distances between neighbouring nodes, with higher values indicating larger gaps and potential cluster boundaries. In the example code below, neighbours in the training loop are defined as nodes horizontal and vertical to the BMU, this is a simplification for demonstration, as most SOMs use distance-based neighbourhoods, not just immediate neighbours.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>grid_size <span class="op">=</span> <span class="bu">int</span>(np.sqrt(n_nodes))</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>weights_grid <span class="op">=</span> weights.reshape(grid_size, grid_size, input_dim)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> find_bmu_grid(weights_grid, x):</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    distances <span class="op">=</span> np.<span class="bu">sum</span>((weights_grid <span class="op">-</span> x)<span class="op">**</span><span class="dv">2</span>, axis<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.unravel_index(np.argmin(distances), distances.shape)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>Figure 2</strong></p>
+<p><em>U-Matrix and Node Weight Organization of a 2D SOM after 100 Iterations</em></p>
+<p><img src="./images/som_side_by_side.gif" class="img-fluid"></p>
+<p><em>Note.</em> In the U-Matrix, darker colours represent larger distances between neighbouring nodes, while lighter colours indicate nodes close together in the input space.</p>
+</section>
+<section id="existing-coding-libraries" class="level2">
+<h2 class="anchored" data-anchor-id="existing-coding-libraries">Existing Coding Libraries</h2>
+<p>There are several software libraries available for coding SOMs, ranging from simple implementations to complex parallel training. Highlighted examples discussed here include MiniSom in Python, Somoclu in C++, and Kohonen’s package in R.</p>
+<p>MiniSom (Vettigili, 2018) is a Python package that only requires a data array of any number of dimensions and can generate various visualization options such as seed maps, hexagonal topology, and colour quantization. The main benefit of this library is its ability to adapt automatically to the number of dimensions given, unlike our simplified code, which needs to be tweaked each time to handle higher or lower dimensions.</p>
+<p>Somoclu, developed by Wittek et al.&nbsp;(2017), is designed for parallelized training of large-scale SOMs. It distributes computations in parallel across multiple CPU cores using OpenMP, across clusters via MPI, and on GPUs using CUDA (enables GPU acceleration). As a result, Somoclu is well suited for very large map sizes and/or high-dimensional datasets. For instance, it is used to analyze large molecular datasets and can be applied to wine classification, such as by clustering fermentation types based on carboxylic acid ratios in different grape varieties (Milovanovic et al., 2019). Although written in C++ it is also accessible through Python, R, Julia and MATLAB.</p>
+<p>Lastly, the kohonen R package, created by Wehrens and Buydens (2007), implements the SOM framework originally introduced by Teuvo Kohonen with several variants. The package includes the standard unsupervised SOM, and also supervised extensions (e.g., bi-directional SOMs) and multi-layered SOMs (e.g., supersom) which can integrate multiple data sources. An advantage of this package is its flexibility such as allowing supervised information to be incorporated into the SOM rather than requiring a completely separate model. More recent updates, including version 3.0 (Wehrens &amp; Kruisselbrink, 2018), further expand this flexibility by introducing new elements, including support for different distance measures other than standard Euclidean distance calculations. Overall, there is an ongoing emergence of specialized SOM libraries that serve different purposes, highlighting the method’s ongoing relevance in modern computational neuroscience.</p>
+<hr>
+</section>
+<section id="results-of-simulations" class="level2">
+<h2 class="anchored" data-anchor-id="results-of-simulations"><strong>Results of Simulations</strong></h2>
+<p>Simulations were conducted to evaluate the behaviour of the Self-Organizing Map (SOM) under different grid sizes and learning rates. The configurations we tested are shown in table 1.</p>
+<p><strong>Table 1.</strong></p>
+<p><em>SOM Results by Grid Size and Learning Rate (η)</em></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 9%">
+<col style="width: 43%">
+<col style="width: 46%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td></td>
+<td>η = 0.1</td>
+<td>η = 0.5</td>
+</tr>
+<tr class="even">
+<td>5x5</td>
+<td><img src="./images/som_5x5_eta01.png" class="img-fluid"></td>
+<td><img src="./images/som_5x5_eta05.png" class="img-fluid"></td>
+</tr>
+<tr class="odd">
+<td>10x10</td>
+<td><img src="./images/som_5x5_eta05.png" class="img-fluid"></td>
+<td><img src="./images/som_10x10_eta05.png" class="img-fluid"></td>
+</tr>
+</tbody>
+</table>
+<section id="effect-of-learning-rate-η" class="level3">
+<h3 class="anchored" data-anchor-id="effect-of-learning-rate-η"><strong>1 – Effect of Learning Rate (η)</strong></h3>
+<p>The learning rate plays a significant role in how quickly and effectively the SOM organizes itself. In this model, weight updates are proportional to the learning rate, meaning that larger values of η result in more substantial adjustments during each iteration. The results show that a higher learning rate (η = 0.5) produced a more structured and visually organized map compared to a lower learning rate (η = 0.1) in 100 iterations. This is because the larger learning rate allows the weights to move more quickly toward the input values, enabling faster organization within a limited number of training iterations. In contrast, a smaller learning rate led to slower adaptation, resulting in less clearly defined structure over the same number of iterations. However, while a higher learning rate improves short-term organization, excessively large values may introduce instability and prevent proper convergence.</p>
+</section>
+<section id="effect-of-grid-size" class="level3">
+<h3 class="anchored" data-anchor-id="effect-of-grid-size"><strong>2 – Effect of Grid Size</strong></h3>
+<p>The size of the SOM grid also influences how the learning rate affects the overall organization. Although the learning rate is computed using the same decay function regardless of grid size, its practical impact differs depending on the number of nodes. For the larger 10×10 grid, the same learning rate must adjust a greater number of neurons. As a result, a smaller learning rate (η = 0.1) was less effective in producing noticeable organization within 100 iterations. The map appeared less structured compared to the smaller grid under similar conditions. In contrast, using a higher learning rate (η = 0.5) in the larger grid improved the formation of visible patterns and structure. The increased update magnitude allowed the SOM to better organize the expanded set of weights.</p>
+</section>
+<section id="relevance-of-self-organizing-maps" class="level3">
+<h3 class="anchored" data-anchor-id="relevance-of-self-organizing-maps"><strong>Relevance of Self-Organizing Maps</strong></h3>
+<p>Self-Organizing Maps remain relevant as a tool for unsupervised data exploration and visualization, particularly when working with complex or high-dimensional datasets. As highlighted by Wehrens and Buydens (2007), SOMs are effective because they allow data to be visualized without relying on strict statistical assumptions, making them useful in exploratory analysis.</p>
+<p>An important strength of SOMs is their ability to preserve topological relationships, meaning that similar data points are mapped to nearby neurons. This makes them valuable for identifying clusters, patterns, and anomalies in situations where labeled data is not available. As a result, SOMs are especially useful in early-stage analysis, where the underlying structure of the data is not yet known. SOMs also provide a level of interpretability that more complex machine learning models tend to lack. Rather than focusing purely on prediction, they help users understand how data is organized.</p>
+</section>
+<section id="limitations-of-self-organizing-maps" class="level3">
+<h3 class="anchored" data-anchor-id="limitations-of-self-organizing-maps"><strong>Limitations of Self-Organizing Maps</strong></h3>
+<p>Despite their advantages, SOMs have several limitations that restrict their use in modern machine learning applications. First, SOMs are generally not meant for predictive performance. While they are effective for visualization and approximate clustering, they are typically outperformed by other models in tasks requiring high classification accuracy or advanced representation learning. Second, SOMs are sensitive to parameter choices. As noted in Kohonen’s original work, successful organization depends on appropriate conditions during training. Key parameters such as learning rate, map size, and neighborhood radius must be appropriately selected. Different choices can lead to significantly different results, meaning that the method may lack consistency across runs.&nbsp;</p>
+<p>Several factors contribute to the sensitivity of Self-Organizing Maps. The initialization of the model plays a role, as random starting weights can lead to different final map configurations. The chosen map size is also important; too few neurons may not adequately capture the underlying data structure, while too many can result in overfitting. The learning rate must be carefully selected, since values that are too small can slow convergence, whereas excessively large values may cause instability during training. Finally, the neighborhood function significantly affects performance, a small radius can limit generalization, while a large radius may reduce important structural detail.</p>
+<p>SOMs are less commonly used in modern machine learning pipelines, where more flexible and scalable methods are often preferred. While SOMs remain useful for interpretation and visualization, their limitations show that they are better applied as exploratory tools rather than primary predictive models.</p>
+</section>
+<section id="general-assessment" class="level3">
+<h3 class="anchored" data-anchor-id="general-assessment"><strong>General Assessment</strong></h3>
+<p>This presentation provides a clear and well-structured introduction to Self-Organizing Maps, especially for students learning the concept for the first time. One of the main strengths is the step-by-step explanation of key processes in SOMs, such as best matching unit selection, neighborhood-based learning, and convergence. Breaking the algorithm into smaller components, and showing how it works in both one-dimensional and two-dimensional examples, effectively separates abstract ideas into ones that are easier to understand. By also including simple code examples throughout, it helps connect the theory directly to how SOMs are actually implemented.</p>
+<p>The use of visualizations, such as the 1D plots and 2D U-Matrix, adds strong instructional value by showing how the map organizes over time. These figures make it easier to see patterns that would be harder to understand from code or equations alone. The Results of Simulations section clearly demonstrates how parameters like learning rate and grid size affect the outcome. This can encourage a more thoughtful understanding of how the model changes and varies based on many factors.</p>
+<p>From a teaching perspective, this report could serve as a solid foundation for developing further course material. The clear separation between background, explanation, implementation, and results makes it easy to expand each section into more detailed lessons.</p>
+<hr>
+</section>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<p>Bishop, C. M. (2006). Pattern recognition and machine learning. Springer</p>
+<p>Benkő, Z., Stippinger, M., Bencze, A., Bazsó, F., Telcs, A., &amp; Somogyvári, Z. (2026). Inference of hidden common driver dynamics by anisotropic self-organizing neural networks. Neural Networks, 194, 108113. <a href="https://doi.org/10.1016/j.neunet.2025.108113" class="uri">https://doi.org/10.1016/j.neunet.2025.108113</a></p>
+<p>Dehghani, A. O., Qian, X., Farahani, A., &amp; Bashivan, P. (2025). Credit-based self-organizing maps: Training deep topographic networks with minimal performance degradation [Conference presentation slides]. International Conference on Learning Representations (ICLR 2025).<a href="https://iclr.cc/media/iclr-2025/Slides/27851.pdf" class="uri">https://iclr.cc/media/iclr-2025/Slides/27851.pdf</a></p>
+<p>Guérin, A. &amp; Chauvet, P. &amp; Saubion, F. (2024). A Survey on Recent Advances in Self-Organizing Maps. 10.48550/arXiv.2501.08416.&nbsp;</p>
+<p>Haykin, S. (2009). Neural networks and learning machines (3rd ed.). Pearson</p>
+<p>Kohonen, T. (1982). Self-organized formation of topologically correct feature maps. Biological Cybernetics, 43(1), 59–69. <a href="https://doi.org/10.1007/BF00337288" class="uri">https://doi.org/10.1007/BF00337288</a></p>
+<p>Kohonen, T. (2001). Self-organizing maps (3rd ed.). Springer</p>
+<p>Kohonen, T. (2013). Essentials of the self-organizing map. Neural Networks, 37, 52–65. <a href="https://doi.org/10.1016/j.neunet.2012.09.018" class="uri">https://doi.org/10.1016/j.neunet.2012.09.018</a>&nbsp;</p>
+<p>Kwa, H. L., Leong Kit, J., &amp; Bouffanais, R. (2022). Balancing collective exploration and exploitation in multi-agent and multi-robot systems: A Review. Frontiers in Robotics and AI, 8. <a href="https://doi.org/10.3389/frobt.2021.771520" class="uri">https://doi.org/10.3389/frobt.2021.771520</a>&nbsp;&nbsp;</p>
+<p>Milovanovic, M., Žeravík, J., Obořil, M., Pelcová, M., Lacina, K., Cakar, U., Petrovic, A., Glatz, Z., &amp; Skládal, P. (2019). A novel method for classification of wine based on organic acids. Food Chemistry, 284, 296–302. <a href="https://doi.org/10.1016/j.foodchem.2019.01.113" class="uri">https://doi.org/10.1016/j.foodchem.2019.01.113</a>&nbsp;</p>
+<p>Muliukov, A. R., Rodriguez, L., Miramond, B., Khacef, L., Schmidt, J., Berthet, Q., &amp; Upegui, A. (2022). A Unified Software/Hardware Scalable Architecture for Brain-Inspired Computing Based on Self-Organizing Neural Models. Frontiers in neuroscience, 16, 825879. <a href="https://doi.org/10.3389/fnins.2022.825879" class="uri">https://doi.org/10.3389/fnins.2022.825879</a></p>
+<p>Ritter, H., Martinetz, T., &amp; Schulten, K. (1992). Neural computation and self-organizing maps. Addison-Wesley</p>
+<p>Swindale, N. V., Bauer, H-U. (1998). The application of Kohonen self-organizing maps to neuroscience. University of British Columbia.<a href="https://swindale.ecc.ubc.ca/wp-content/uploads/2020/09/application_of_kohonen.pdf" class="uri">https://swindale.ecc.ubc.ca/wp-content/uploads/2020/09/application_of_kohonen.pdf</a></p>
+<p>Vettigli, G. (2018). MiniSom: minimalistic and NumPy-based implementation of the Self Organizing Map. GitHub. <a href="https://github.com/JustGlowing/minisom/" class="uri">https://github.com/JustGlowing/minisom/</a>&nbsp;&nbsp;</p>
+<p>Vesanto, J. (2000). SOM-based data visualization methods. Intelligent Data Analysis, 3(2), 111–126</p>
+<p>Wehrens, R., &amp; Buydens, L. M. (2007). Self- and super-organizing maps in r: The kohonen package. Journal of Statistical Software, 21(5). <a href="https://doi.org/10.18637/jss.v021.i05" class="uri">https://doi.org/10.18637/jss.v021.i05</a>&nbsp;&nbsp;&nbsp;</p>
+<p>Wehrens, R., &amp; Kruisselbrink, J. (2018). Flexible self-organizing maps in kohonen 3.0. Journal of Statistical Software, 87(7). <a href="https://doi.org/10.18637/jss.v087.i07" class="uri">https://doi.org/10.18637/jss.v087.i07</a>&nbsp;</p>
+<p>Wittek, P., Gao, S. C., Lim, I. S., &amp; Zhao, L. (2017). Somoclu: An efficient parallel library for self-organizing maps. Journal of Statistical Software, 78(9). <a href="https://doi.org/10.18637/jss.v078.i09" class="uri">https://doi.org/10.18637/jss.v078.i09</a></p>
+<hr>
+</section>
+<section id="appendix-a-som-implementation-python" class="level1">
+<h1>Appendix A: SOM Implementation (Python)</h1>
+<section id="a1.-github-repository" class="level2">
+<h2 class="anchored" data-anchor-id="a1.-github-repository">A1. GitHub Repository</h2>
+<p>Contains code written in Python for the one and two dimensional implementation of a simple self organizing map model. In addition to the core algorithm is a qmd file for this paper, a 2D sample dataset and files transforming the code into an animation (for visualization of training progression). GitHub Repository: <a href="https://github.com/Linqqqqqq/Psych_420_SOM.git"><code>https://github.com/Linqqqqqq/Psych_420_SOM.git</code></a></p>
+</section>
+<section id="a2.-1d-som-implementation" class="level2">
+<h2 class="anchored" data-anchor-id="a2.-1d-som-implementation">A2. 1D SOM Implementation</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 1D Parameters</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">10</span>)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>n_nodes <span class="op">=</span> <span class="dv">9</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>weights <span class="op">=</span> np.random.rand(n_nodes)</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>inputs <span class="op">=</span> np.array([<span class="fl">0.1</span>, <span class="fl">0.4</span>, <span class="fl">0.9</span>, <span class="fl">0.7</span>])</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>eta_initial <span class="op">=</span> <span class="fl">0.5</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>sigma_initial <span class="op">=</span> <span class="fl">1.0</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>n_iterations <span class="op">=</span> <span class="dv">100</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>tau <span class="op">=</span> n_iterations <span class="op">/</span> np.log(sigma_initial <span class="op">+</span> <span class="fl">1e-8</span>)</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> eta(t, eta_initial, tau):</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>   <span class="cf">return</span> eta_initial <span class="op">*</span> np.exp(<span class="op">-</span>t <span class="op">/</span> tau)</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> sigma(t, sigma_initial, tau):</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>   <span class="cf">return</span> sigma_initial <span class="op">*</span> np.exp(<span class="op">-</span>t <span class="op">/</span> tau)</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> find_bmu(weights, x):</span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>   distances <span class="op">=</span> (weights <span class="op">-</span> x)<span class="op">**</span><span class="dv">2</span></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>   <span class="cf">return</span> np.argmin(distances)</span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> neighbourhood(n_nodes, c, sig):</span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>   h <span class="op">=</span> np.zeros(n_nodes)</span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>   <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(n_nodes):</span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>       dist_sq <span class="op">=</span> (i <span class="op">-</span> c)<span class="op">**</span><span class="dv">2</span></span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>       h[i] <span class="op">=</span> np.exp(<span class="op">-</span>dist_sq <span class="op">/</span> (<span class="dv">2</span> <span class="op">*</span> sig<span class="op">**</span><span class="dv">2</span>))</span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>   <span class="cf">return</span> h</span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> update_weights(weights, x, eta, h):</span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a>   weights <span class="op">+=</span> eta <span class="op">*</span> h <span class="op">*</span> (x <span class="op">-</span> weights)</span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a>   <span class="cf">return</span> weights</span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> t <span class="kw">in</span> <span class="bu">range</span>(n_iterations):</span>
+<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a>   <span class="cf">for</span> x <span class="kw">in</span> inputs:</span>
+<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a>       c <span class="op">=</span> find_bmu(weights, x)</span>
+<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a>       alpha <span class="op">=</span> eta(t, eta_initial, tau)</span>
+<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a>       sig <span class="op">=</span> <span class="bu">max</span>(sigma(t, sigma_initial, tau), <span class="fl">1e-8</span>)</span>
+<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a>       h <span class="op">=</span> neighbourhood(n_nodes, c, sig)</span>
+<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a>       weights <span class="op">=</span> update_weights(weights, x, alpha, h)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="a3.-2d-som-implementation" class="level2">
+<h2 class="anchored" data-anchor-id="a3.-2d-som-implementation">A3. 2D SOM Implementation</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 2D Parameters</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">10</span>)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>n_nodes <span class="op">=</span> <span class="dv">9</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>input_dim <span class="op">=</span> <span class="dv">2</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>weights <span class="op">=</span> np.random.rand(n_nodes, input_dim)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>inputs <span class="op">=</span> np.array([</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>   [<span class="fl">0.1</span>, <span class="fl">0.2</span>],</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>   [<span class="fl">0.4</span>, <span class="fl">0.3</span>],</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>   [<span class="fl">0.9</span>, <span class="fl">0.8</span>],</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>   [<span class="fl">0.7</span>, <span class="fl">0.6</span>]</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>eta_initial <span class="op">=</span> <span class="fl">0.5</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>sigma_initial <span class="op">=</span> <span class="fl">1.0</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>n_iterations <span class="op">=</span> <span class="dv">100</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>tau <span class="op">=</span> n_iterations <span class="op">/</span> np.log(sigma_initial <span class="op">+</span> <span class="fl">1e-8</span>)</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> eta(t, eta_initial, tau):</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>   <span class="cf">return</span> eta_initial <span class="op">*</span> np.exp(<span class="op">-</span>t <span class="op">/</span> tau)</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> sigma(t, sigma_initial, tau):</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>   <span class="cf">return</span> sigma_initial <span class="op">*</span> np.exp(<span class="op">-</span>t <span class="op">/</span> tau)</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> find_bmu(weights, x):</span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>   distances <span class="op">=</span> np.<span class="bu">sum</span>((weights <span class="op">-</span> x)<span class="op">**</span><span class="dv">2</span>, axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>   <span class="cf">return</span> np.argmin(distances)</span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> neighbourhood(n_nodes, c, sig):</span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>   h <span class="op">=</span> np.zeros(n_nodes)</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>   <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(n_nodes):</span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>       dist_sq <span class="op">=</span> (i <span class="op">-</span> c)<span class="op">**</span><span class="dv">2</span></span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>       h[i] <span class="op">=</span> np.exp(<span class="op">-</span>dist_sq <span class="op">/</span> (<span class="dv">2</span> <span class="op">*</span> sig<span class="op">**</span><span class="dv">2</span>))</span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>   <span class="cf">return</span> h</span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> update_weights(weights, x, eta, h):</span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>   weights <span class="op">+=</span> eta <span class="op">*</span> h[:, np.newaxis] <span class="op">*</span> (x <span class="op">-</span> weights)</span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>   <span class="cf">return</span> weights</span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a><span class="co"># Training Loop</span></span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> t <span class="kw">in</span> <span class="bu">range</span>(n_iterations):</span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a>   <span class="cf">for</span> x <span class="kw">in</span> inputs:</span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a>       c <span class="op">=</span> find_bmu(weights, x)</span>
+<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a>       alpha <span class="op">=</span> eta(t, eta_initial, tau)</span>
+<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a>       sig <span class="op">=</span> <span class="bu">max</span>(sigma(t, sigma_initial, tau), <span class="fl">1e-8</span>)</span>
+<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a>       h <span class="op">=</span> neighbourhood(n_nodes, c, sig)</span>
+<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a>       weights <span class="op">=</span> update_weights(weights, x, alpha, h)</span>
+<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Final weights:</span><span class="ch">\n</span><span class="st">"</span>, weights)</span>
+<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-48"><a href="#cb7-48" aria-hidden="true" tabindex="-1"></a>grid_size <span class="op">=</span> <span class="bu">int</span>(np.sqrt(n_nodes))</span>
+<span id="cb7-49"><a href="#cb7-49" aria-hidden="true" tabindex="-1"></a>weights_grid <span class="op">=</span> weights.reshape(grid_size, grid_size, input_dim)</span>
+<span id="cb7-50"><a href="#cb7-50" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> find_bmu_grid(weights_grid, x):</span>
+<span id="cb7-51"><a href="#cb7-51" aria-hidden="true" tabindex="-1"></a>   distances <span class="op">=</span> np.<span class="bu">sum</span>((weights_grid <span class="op">-</span> x)<span class="op">**</span><span class="dv">2</span>, axis<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb7-52"><a href="#cb7-52" aria-hidden="true" tabindex="-1"></a>   <span class="cf">return</span> np.unravel_index(np.argmin(distances), distances.shape)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
