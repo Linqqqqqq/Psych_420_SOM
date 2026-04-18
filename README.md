@@ -3,7 +3,7 @@ The goal is to translate the mathematical formulation of SOMs into working code 
 
 ## Files
 - SOM_Project_Report Folder contains:
-  - SOM_Psych_420.qmd –> project write-up
+  - SOM_Psych_420.qmd –> HTML & PDF project write-up files
 - som_1D_model.py -> core 1D SOM implementation
 - som_1D_animation.py –> 1D training visualization
 - som_dataset_2d –> dataset for 2D model
