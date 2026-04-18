@@ -129,20 +129,19 @@ Together, these components form the core SOM algorithm, where weights are iterat
 # 1-Dimensional SOM Demonstration
 
 The 1-dimensional (1D) SOM provides a simple way to observe how the nodes gradually organize themselves along a line. Over successive iterations, the weights never completely stop updating; instead, they gradually stabilize as the map adapts less with each step. The figure below demonstrates how the SOM continuously organizes to reflect the structure of the input data.
-::::: figure
+
 **Figure 1**\
 *Organization of Node Weights in a 1D SOM across 200 Iterations*
 
 ::: {.content-visible when-format="html"}
 ![](/images/som_weights.gif)
+*Note.* Input values were normalized within a range of 0–1.
 :::
 
 ::: {.content-visible when-format="pdf"}
 ![](/images/figure_1_final_iteration.png)
-:::
-
 \noindent\textit{Note.} Input values were normalized within a range of 0–1.
-:::::
+:::
 
 # 2-Dimensional SOM Demonstration
 
@@ -164,13 +163,14 @@ def find_bmu_grid(weights_grid, x):
 
 ::: {.content-visible when-format="html"}
 ![](/images/som_side_by_side.gif)
+*Note.* In the U-Matrix, darker colours represent larger distances between neighbouring nodes, while lighter colours indicate nodes close together in the input space.
 :::
 
 ::: {.content-visible when-format="pdf"}
 ![](/images/figure_2_final_iteration.png)
+\noindent\textit{Note.} In the U-Matrix, darker colours represent larger distances between neighbouring nodes, while lighter colours indicate nodes close together in the input space.
 :::
 
-\noindent\textit{Note.} In the U-Matrix, darker colours represent larger distances between neighbouring nodes, while lighter colours indicate nodes close together in the input space.
 :::::
 
 # Existing Coding Libraries
